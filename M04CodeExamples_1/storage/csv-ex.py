@@ -5,7 +5,7 @@ import pandas
 #csv of villians in comics using a list of lists
 villians = [["Doctor", "Doom"], ["The", "Joker"], ["Oswald", "Cobblepot"]]
 
-#we can use the csv package 
+#we can use the csv package to get informayion from it
 with open('villians.csv', "wt") as villianFile:
     csvout = csv.writer(villianFile)
     csvout.writerows(villians)

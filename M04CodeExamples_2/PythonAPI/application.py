@@ -1,5 +1,5 @@
 #import flask so we can use it
-#from flask import Flask,request
+#from flask import Flask
 
 #This is how we manipulate the database
 #from flask_sqlalchemy import SQLAlchemy
@@ -38,7 +38,7 @@ def get_drinks():
         output.append(drink_data)
     return {"drinks" : output}
 
-class Dring(db.Model):
+class Drink(db.Model):
 
 
     id = db.Column(db.Integer, primary_key = True)
