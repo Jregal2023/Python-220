@@ -1,0 +1,6 @@
+import sqlite3
+>>> db = sqlite3.connect('books.db')
+>>> curs = db.cursor()
+>>> curs.execute('''create table book (title text, author text, year int)''')
+<sqlite3.Cursor object at 0x1006e3b90>
+>>> db.commit()
