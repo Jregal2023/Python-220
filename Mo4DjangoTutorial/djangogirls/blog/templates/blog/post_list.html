@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+   <title>My blog</title>
+<body>
+    <header><a href =""><h1 class="text">HI how art thou!</a></h1></header>
+    <!--to link things we use anchor tags with an html reference.. we call this a href. a href creates a link-->
+    <!--THis is a h1 or heading taf... they display bigger and are meant to for headings to be bigger-->
+    
+    <!--When we want to use python variables, we can use the  to let html know this is a python variable-->
+
+    <!--When we want to do list rendering we have to use a for loop-->
+    <!--When we run code like if or loops or functions, we use the following syntax -->
+    { %for post in posts % }
+        <article>
+        <time></time>{{post}}
+         </article>
+    {% endfor %}
+    <article>
+        <time>Published 14.08.2025</time>
+        <h2><a href = ""> My first post</a></h2>
+        <p>Lorem, sipum</p>
+    </article>
+
+    <article>
+        <time>Published 14.08.2025</time>
+        <h2> My Second post</h2>
+        <p>Lorem, sipum</p>
+    </article>
+    <h2>subheading</h2>
+    <p>This works now!</p>
+</body>
+</html>
