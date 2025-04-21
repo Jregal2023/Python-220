@@ -1,0 +1,4 @@
+#forms are cool in django.. because we use a modelw e can just grab the things we want from our model to display as
+#text boxes or inputs
+from django import forms
+from .models import Post
