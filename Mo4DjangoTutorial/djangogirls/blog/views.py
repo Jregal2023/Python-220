@@ -1,6 +1,7 @@
 from django.shortcuts import render , get_object_or_404
 from django.utils import timezone
 from .models import Post
+from django.shortcuts import render
 # Create your views here.
 #views is used to handle requests and provide a respons
 #we take the request info and handle it in someway
