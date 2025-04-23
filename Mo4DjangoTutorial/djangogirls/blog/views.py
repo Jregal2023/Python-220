@@ -1,4 +1,4 @@
-from django.shortcuts import render , get_object_or_404
+
 from django.utils import timezone
 from .models import Post
 from django.shortcuts import render
@@ -18,12 +18,13 @@ def post_list(request):
     #DELETE -Delete something from DB
     posts = Post.objects.filter(published_date__lte = timezone.now()).order_by('published_date')
     
-    return render(request,'blog/post_list.html', {'Posts' : posts})
+    return render(request, 'blog/post_list.html', {'posts' : posts})
 
-def post_detail(request, pk):
+#def post_detail(request, pk):
     #get object 404 only works when grabbing a single item
-    post = get_object_or_404(Post, pk=pk)
-    return render(request, 'blog/post_detail.html', {'post':post})
+    #post = get_object_or_404(Post, pk=pk)
+    #return render(request, 'blog/templates/blog/post_detail.html', {'post':post})
+
 '''
 def post_new(request):
     if request.method == 'POST':
