@@ -11,6 +11,10 @@ from .models import Post
 def post_list(request):
     #return a response..the response will return the request back to the user
     #tell you the template or html page to go to and any data that needs to be passed to that html page
+    #POST in HTTP means to add something to a database
+    #GET us to grab
+    #PUT - updated Existing
+    #DELETE -Delete something from DB
     posts = Post.objects.filter(published_date__lte = timezone.now()).order_by('published_date')
     
     return render(request,'blog/post_list.html', {'Posts' : posts})
