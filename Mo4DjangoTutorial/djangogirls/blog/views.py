@@ -3,6 +3,11 @@ from django.utils import timezone
 from .models import Post
 from .forms import PostForm
 from django.shortcuts import redirect
+#Basically this says hey you need to have a login and allows me to define functions that require a login
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
+#from django.urls import LazyView
+
 # Create your views here.
 #views is used to handle requests and provide a respons
 #we take the request info and handle it in someway
@@ -24,22 +29,22 @@ def post_list(request):
 def post_detail(request, pk):
     #get object 404 only works when grabbing a single item
     post = get_object_or_404(Post, pk=pk)
-    return render(request, 'blog/templates/blog/post_detail.html', {'post':post})
+    return render(request, 'blog/post_detail.html', {'post':post})
 
-
+@login_required
 def post_new(request):
     if request.method == 'POST':
-        form = PostForm(request.POST)
+        form = PostForm(request.POST, instance=post)
         if form.is_valid():
             post = form.save(commit = False)
             post.author = request.user
-            post.published_date = timezone.now()
+            #post.published_date = timezone.now()
             post.save()
-            return redirect('post_Detail', pk = post.pk)
+            return redirect('post_detail', pk = post.pk)
     else:
         
         form = PostForm()
-        return render (request, 'blog/post_edit.html', {'form': form})
+    return render (request, 'blog/post_edit.html', {'form': form})
 
 
 def post_edit(request, pk):
@@ -51,10 +56,31 @@ def post_edit(request, pk):
         if form.is_valid():
             post = form.save(commit=False)
             post.author = request.user
-            post.published_date = timezone.now()
+            #post.published_date = timezone.now()
             post.save()
             return redirect('post_detail', pk=post.pk)
     else:
         #pre-fill out text boxes with all the info from our database entry for this particular post
         form = PostForm(instance=post)
     return render(request, 'blog/post_edit.html', {'form': form})
+
+def post_draft_list(request):
+    posts = Post.objects.filter(published_date__isnull=True).order_by('created_date')
+
+    return render(request, 'blog/post_draft_list.html', {'posts' : posts})
+    
+def post_publish(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    if request.method=='POST':
+        post.publish()
+    return redirect('post_detail', pk=pk)
+
+def publish(self):
+    self.published_date = timezone.now()
+    self.save()
+
+def post_remove(request,pk):
+    post = get_object_or_404(Post, pk=pk)
+    if request.method =='POST':
+        post.delete()
+    return redirect('post_list')
