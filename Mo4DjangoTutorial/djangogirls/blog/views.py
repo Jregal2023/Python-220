@@ -1,7 +1,8 @@
-
+from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 from .models import Post
-from django.shortcuts import render
+from .forms import PostForm
+from django.shortcuts import redirect
 # Create your views here.
 #views is used to handle requests and provide a respons
 #we take the request info and handle it in someway
@@ -20,12 +21,12 @@ def post_list(request):
     
     return render(request, 'blog/post_list.html', {'posts' : posts})
 
-#def post_detail(request, pk):
+def post_detail(request, pk):
     #get object 404 only works when grabbing a single item
-    #post = get_object_or_404(Post, pk=pk)
-    #return render(request, 'blog/templates/blog/post_detail.html', {'post':post})
+    post = get_object_or_404(Post, pk=pk)
+    return render(request, 'blog/templates/blog/post_detail.html', {'post':post})
 
-'''
+
 def post_new(request):
     if request.method == 'POST':
         form = PostForm(request.POST)
@@ -39,4 +40,21 @@ def post_new(request):
         
         form = PostForm()
         return render (request, 'blog/post_edit.html', {'form': form})
-        '''
+
+
+def post_edit(request, pk):
+    #grab post to edit
+    post = get_object_or_404(Post, pk=pk)
+    if request.method == 'POST':
+        #instace=post makes sure we are changing an existing post and not making a new one
+        form = PostForm(request.POST, instance=post)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.author = request.user
+            post.published_date = timezone.now()
+            post.save()
+            return redirect('post_detail', pk=post.pk)
+    else:
+        #pre-fill out text boxes with all the info from our database entry for this particular post
+        form = PostForm(instance=post)
+    return render(request, 'blog/post_edit.html', {'form': form})
